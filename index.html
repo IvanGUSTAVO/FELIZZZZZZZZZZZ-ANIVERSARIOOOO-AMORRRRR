@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Aniversario | Magia y Tiempo</title>
+    
+    <!-- Fuentes Elegantes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           VARIABLES Y RESET
+           ========================================= */
+        :root {
+            --rose-gold: #B76E79;
+            --rose-gold-glow: rgba(183, 110, 121, 0.4);
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --text-light: #F9F7F2;
+            --text-muted: rgba(249, 247, 242, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* =========================================
+           CANVAS DE CURSOR MÁGICO
+           ========================================= */
+        #cursor-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99999; /* Por encima de todo */
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--rose-gold); border-radius: 4px; }
+
+        /* =========================================
+           EFECTOS GLOBALES Y UTILIDADES
+           ========================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--rose-gold);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px var(--rose-gold-glow);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 4rem;
+        }
+
+        /* =========================================
+           REPRODUCTOR DE MÚSICA (GLASSMORPHISM)
+           ========================================= */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(183, 110, 121, 0.2);
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+        .music-player:hover {
+            border-color: var(--rose-gold);
+            box-shadow: 0 10px 30px var(--rose-gold-glow);
+        }
+        .play-btn {
+            background: var(--rose-gold);
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        .play-btn:hover { transform: scale(1.1); }
+        .track-info { display: flex; flex-direction: column; }
+        .track-title { font-size: 0.9rem; font-weight: 600; }
+        .track-artist { font-size: 0.75rem; color: var(--rose-gold); }
+
+        /* =========================================
+           HERO SECTION (CON CANVAS DE PARTÍCULAS)
+           ========================================= */
+        #hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 20px;
+        }
+        .hero-title {
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            color: var(--text-light);
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeInDown 1.5s ease-out;
+        }
+        .hero-title span { color: var(--rose-gold); font-style: italic; }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            animation: fadeInUp 1.5s ease-out 0.5s both;
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            color: var(--rose-gold);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        /* =========================================
+           CONTADOR DE AMOR
+           ========================================= */
+        #counter-section {
+            padding: 100px 20px;
+            background: linear-gradient(to bottom, var(--bg-dark), var(--bg-card));
+        }
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .time-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(183, 110, 121, 0.1);
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        .time-box:hover {
+            transform: translateY(-10px);
+            border-color: var(--rose-gold);
+            box-shadow: 0 10px 30px rgba(183, 110, 121, 0.15);
+        }
+        .time-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--rose-gold);
+            line-height: 1;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .time-label {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .counter-date {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* =========================================
+           MEMORIAS DE BANDERAS (EFECTO 3D TILT)
+           ========================================= */
+        #banderas {
+            padding: 120px 20px;
+            background: var(--bg-card);
+        }
+        .memories-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            perspective: 1000px; /* Necesario para el efecto 3D */
+        }
+        .memory-card {
+            background: var(--bg-dark);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(183, 110, 121, 0.1);
+            transform-style: preserve-3d;
+            transition: border-color 0.3s ease;
+            cursor: pointer;
+        }
+        .memory-card:hover { border-color: var(--rose-gold); }
+        .memory-img-wrapper {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* INSTRUCCIONES PARA IMÁGENES:
+           Aquí debes poner la URL de tus imágenes dentro del atributo src="" */
+        .memory-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .memory-card:hover .memory-img-wrapper img {
+            transform: scale(1.05);
+        }
+        .memory-info {
+            padding: 30px;
+            text-align: center;
+            transform: translateZ(30px); /* Hace que el texto "flote" en 3D */
+        }
+        .memory-info h3 {
+            font-size: 1.5rem;
+            color: var(--rose-gold);
+            margin-bottom: 10px;
+        }
+        .memory-info p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           LA PROMESA (ANILLOS)
+           ========================================= */
+        #promise {
+            padding: 120px 20px;
+            background: linear-gradient(to top, var(--bg-dark), var(--bg-card));
+            position: relative;
+        }
+        .promise-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            gap: 60px;
+        }
+        .promise-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        .promise-quote {
+            font-size: 2.5rem;
+            color: var(--rose-gold);
+            line-height: 1.3;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .promise-quote::before {
+            content: '"';
+            position: absolute;
+            top: -40px;
+            left: -20px;
+            font-size: 6rem;
+            color: rgba(183, 110, 121, 0.1);
+            font-family: 'Playfair Display', serif;
+        }
+        .promise-desc {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+        .promise-img-container {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        .promise-img-container::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--rose-gold);
+            border-radius: 20px;
+            z-index: 0;
+        }
+        .promise-img-container img {
+            width: 100%;
+            border-radius: 20px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        /* =========================================
+           ÁRBOL DE CORAZONES Y CARTA DE RESILIENCIA
+           ========================================= */
+        #tree-section {
+            padding: 120px 20px;
+            background: var(--bg-dark);
+            position: relative;
+        }
+        .tree-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 50px;
+        }
+        .tree-canvas-container {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #heart-tree {
+            max-width: 100%;
+            background: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid rgba(183, 110, 121, 0.1);
+        }
+        .tree-letter {
+            flex: 1;
+            min-width: 300px;
+            background: var(--bg-card);
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid rgba(183, 110, 121, 0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .tree-letter::before {
+            content: '❤️';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5rem;
+            background: var(--bg-dark);
+            border-radius: 50%;
+            padding: 10px;
+            border: 1px solid rgba(183, 110, 121, 0.2);
+        }
+        .tree-letter h3 {
+            color: var(--rose-gold);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .tree-letter p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        /* Animaciones Keyframes */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+
+        /* =========================================
+           EL GRAN FINAL (CORAZÓN 3D)
+           ========================================= */
+        #finale {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #1a0f14 0%, var(--bg-dark) 70%);
+            overflow: hidden;
+            padding: 20px;
+        }
+        .finale-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+        }
+        #heart-3d-canvas {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 0 auto;
+            display: block;
+            mix-blend-mode: screen; /* Efecto mágico de fusión con el fondo negro */
+        }
+        .finale-title {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            color: var(--text-light);
+            line-height: 1.2;
+            margin-top: -80px; /* Sube el texto para que se superponga al corazón 3D */
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 10;
+        }
+        .finale-title span {
+            color: var(--rose-gold);
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-style: italic;
+            text-shadow: 0 0 40px var(--rose-gold-glow);
+            display: block;
+            margin-top: 5px;
+        }
+        .finale-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: rgba(249, 247, 242, 0.8);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-top: 30px;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .promise-wrapper { flex-direction: column-reverse; }
+            .hero-title { font-size: 3rem; }
+            .finale-title { margin-top: -40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CANVAS PARA EL POLVO DE ESTRELLAS DEL CURSOR -->
+    <canvas id="cursor-canvas"></canvas>
+
+    <!-- REPRODUCTOR DE MÚSICA -->
+    <div class="music-player">
+        <button class="play-btn" id="play-pause-btn" onclick="toggleMusic()">
+            <i class="fas fa-play" id="play-icon"></i>
+        </button>
+        <div class="track-info">
+            <span class="track-title">Sabes</span>
+            <span class="track-artist">Reik</span>
+        </div>
+        <!-- INSTRUCCIÓN MÚSICA: Reemplaza el src con la URL de tu archivo mp3 de "Sabes" -->
+        <audio id="bg-music" loop>
+            <source src="TU_ENLACE_AL_MP3_AQUI.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero">
+        <canvas id="particles-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title serif">Feliz <span>Aniversario</span></h1>
+            <p class="hero-subtitle">Nuestra historia, nuestra magia</p>
+        </div>
+        <i class="fas fa-chevron-down scroll-indicator"></i>
+    </section>
+
+    <!-- CONTADOR EXACTO -->
+    <section id="counter-section">
+        <h2 class="section-title serif reveal">El Tiempo a tu Lado</h2>
+        <p class="section-subtitle reveal">Cada segundo es un tesoro</p>
+        
+        <div class="counter-grid reveal">
+            <div class="time-box">
+                <span class="time-number" id="c-days">00</span>
+                <span class="time-label">Días</span>
+            </div>
+            <div class="time-box">
+                <span class="time-number" id="c-hours">00</span>
+                <span class="time-label">Horas</span>
+            </div>
+            <div class="time-box">
+                <span class="time-number" id="c-minutes">00</span>
+                <span class="time-label">Minutos</span>
+            </div>
+            <div class="time-box">
+                <span class="time-number" id="c-seconds">00</span>
+                <span class="time-label">Segundos</span>
+            </div>
+        </div>
+        <p class="counter-date reveal">Desde el 21 de Junio de 2025 • 8:00 PM</p>
+    </section>
+
+    <!-- MEMORIAS DE BANDERAS (TARJETAS 3D) -->
+    <section id="banderas">
+        <h2 class="section-title serif reveal">La Noche en Banderas</h2>
+        <p class="section-subtitle reveal">Donde los peluches y las sonrisas sellaron el momento</p>
+
+        <div class="memories-container reveal">
+            
+            <!-- TARJETA 1 -->
+            <div class="memory-card">
+                <div class="memory-img-wrapper">
+                    <!-- INSTRUCCIÓN IMAGEN 1: Pon tu foto de ustedes en el parque aquí -->
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600&auto=format&fit=crop" alt="[Imagen de Nosotros en el parque]" />
+                </div>
+                <div class="memory-info">
+                    <h3 class="serif">Nuestras Sonrisas</h3>
+                    <p>Nuestras enormes sonrisas al ver los peluches iluminaban más que la noche en el parque. Esa felicidad pura es y será mi recuerdo favorito.</p>
+                </div>
+            </div>
+
+            <!-- TARJETA 2 -->
+            <div class="memory-card">
+                <div class="memory-img-wrapper">
+                    <!-- INSTRUCCIÓN IMAGEN 2: Pon la foto de TU PRIMER PELUCHE (el que ella te dio) aquí -->
+                    <img src="https://images.unsplash.com/photo-1584447128309-b66b7a4d1b63?q=80&w=600&auto=format&fit=crop" alt="[Imagen de Mi primer peluche]" />
+                </div>
+                <div class="memory-info">
+                    <h3 class="serif">Fieles Testigos</h3>
+                    <p>Ese primer peluche que me diste. Si miras fijamente sus ojitos, parecen estar viendo lo inmensamente felices que somos cuando estamos juntos.</p>
+                </div>
+            </div>
+
+            <!-- TARJETA 3 -->
+            <div class="memory-card">
+                <div class="memory-img-wrapper">
+                    <!-- INSTRUCCIÓN IMAGEN 3: Pon la foto del SPIDEY GIGANTE (el que tú le diste) aquí -->
+                    <img src="https://images.unsplash.com/photo-1608889825103-eb5ed706fc64?q=80&w=600&auto=format&fit=crop" alt="[Imagen de Peluche de Spider-Man]" />
+                </div>
+                <div class="memory-info">
+                    <h3 class="serif">El Gran Guardián</h3>
+                    <p>El Spidey gigante que te regalé. Desde esa banca nos observaba, siendo el guardián de todas las risas compartidas y de nuestro amor incondicional.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ÁRBOL DE CORAZONES Y CARTA DE RESILIENCIA -->
+    <section id="tree-section">
+        <div class="tree-wrapper">
+            <div class="tree-canvas-container reveal">
+                <!-- El árbol matemático crecerá aquí mágicamente -->
+                <canvas id="heart-tree"></canvas>
+            </div>
+            <div class="tree-letter reveal">
+                <h3 class="serif">A Pesar de Todo...</h3>
+                <p>Mi amor, hemos atravesado tormentas y cruzado días pesados. A veces el camino no ha sido fácil y nos ha puesto a prueba, pero mírame, míranos: <strong>seguimos aquí</strong>.</p>
+                <p>Al igual que este árbol que fortalece sus raíces con cada ráfaga de viento fuerte, nosotros hemos aprendido a aferrarnos el uno al otro. Las diferencias nos han enseñado a comprendernos, y cada momento difícil nos ha recordado por qué decidimos tomarnos de la mano en primer lugar.</p>
+                <p>No importa lo pesadas que se pongan las cosas, quiero que sepas que mi lugar seguro siempre serás tú. Estamos aquí a pesar de todo, amándonos más fuerte que ayer.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- LA PROMESA (ANILLOS) -->
+    <section id="promise">
+        <div class="promise-wrapper">
+            <div class="promise-text reveal">
+                <h2 class="promise-quote serif">La promesa sigue intacta, más fuerte que el primer día.</h2>
+                <p class="promise-desc">
+                    El metal no se oxida, y nuestro amor tampoco. Estos anillos no son simples objetos; son el símbolo tangible de un compromiso puro, sincero y eterno. Cada mirada a nuestras manos es recordar que nos elegimos cada día, enfrentando el mundo juntos.
+                </p>
+            </div>
+            <div class="promise-img-container reveal">
+                <!-- INSTRUCCIÓN IMAGEN 4: Pon la foto de SUS ANILLOS DE PROMESA aquí -->
+                <img src="https://images.unsplash.com/photo-1605100804763-247f67b254a4?q=80&w=800&auto=format&fit=crop" alt="[Imagen de Anillos de promesa]" />
+            </div>
+        </div>
+    </section>
+
+    <!-- EL GRAN FINAL WOW FACTOR (CORAZÓN 3D) -->
+    <section id="finale">
+        <div class="finale-content reveal">
+            <!-- Canvas donde el motor matemático renderizará el corazón en 3D -->
+            <canvas id="heart-3d-canvas"></canvas>
+            <h1 class="finale-title serif">Feliz Aniversario<br><span>Mi Amor</span></h1>
+            <p class="finale-subtitle">Por siempre y para siempre</p>
+        </div>
+    </section>
+
+    <!-- SCRIPTS MÁGICOS -->
+    <script>
+        // 1. CONTROLADOR DEL REPRODUCTOR DE MÚSICA
+        const music = document.getElementById('bg-music');
+        const playBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            } else {
+                music.play();
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // 2. LÓGICA DEL CONTADOR EXACTO (21 de Junio de 2025, 8:00 PM)
+        const startDate = new Date('2025-06-21T20:00:00');
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            // Si la fecha aún no llega, evitamos números negativos
+            if (diff < 0) {
+                document.getElementById('c-days').innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            // Animación suave de los números
+            document.getElementById('c-days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('c-hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('c-minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('c-seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+        setInterval(updateCounter, 1000);
+        updateCounter();
+
+        // 3. EFECTO 3D TILT DE VANILLA JS PARA LAS TARJETAS (SUPER WOW FACTOR)
+        const cards = document.querySelectorAll('.memory-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // Posición X dentro de la tarjeta
+                const y = e.clientY - rect.top;  // Posición Y dentro de la tarjeta
+                
+                // Calcula la rotación basada en el cursor (max 15 grados)
+                const rotateX = ((y / rect.height) - 0.5) * -15;
+                const rotateY = ((x / rect.width) - 0.5) * 15;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                // Suaviza el regreso a la posición original
+                card.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'none'; // Quita la transición mientras se mueve para que sea fluido
+            });
+        });
+
+        // 4. ANIMACIONES AL HACER SCROLL (REVEAL)
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target); // Solo se anima una vez
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 5. CANVAS DE PARTÍCULAS MÁGICAS (POLVO DE ESTRELLAS)
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * -1 - 0.5; // Sube lentamente
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.color = Math.random() > 0.5 ? '#B76E79' : '#F9F7F2'; // Rosa Gold o Crema
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Si la partícula sale por arriba, reaparece abajo
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            // Cantidad de partículas depende del ancho para no saturar móviles
+            const numberOfParticles = window.innerWidth < 768 ? 50 : 120;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // EFECTO PARALLAX EN EL HERO (NUEVO SÚPER WOW)
+        const heroSection = document.getElementById('hero');
+        const heroContent = document.querySelector('.hero-content');
+        
+        heroSection.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            heroContent.style.transform = `translateY(${yAxis}px) translateX(${xAxis}px)`;
+        });
+        
+        heroSection.addEventListener('mouseleave', () => {
+            heroContent.style.transition = 'transform 0.5s ease';
+            heroContent.style.transform = `translateY(0px) translateX(0px)`;
+            setTimeout(() => { heroContent.style.transition = 'none'; }, 500);
+        });
+
+        // ESTELA MÁGICA EN EL CURSOR (NUEVO SÚPER WOW)
+        const cursorCanvas = document.getElementById('cursor-canvas');
+        const cursorCtx = cursorCanvas.getContext('2d');
+        let cursorParticles = [];
+
+        function resizeCursorCanvas() {
+            cursorCanvas.width = window.innerWidth;
+            cursorCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCursorCanvas);
+        resizeCursorCanvas();
+
+        const mouse = { x: null, y: null };
+
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+            for (let i = 0; i < 3; i++) { // Generar 3 partículas por movimiento
+                cursorParticles.push(new CursorParticle());
+            }
+        });
+
+        window.addEventListener('touchmove', (event) => {
+            mouse.x = event.touches[0].clientX;
+            mouse.y = event.touches[0].clientY;
+            for (let i = 0; i < 3; i++) {
+                cursorParticles.push(new CursorParticle());
+            }
+        });
+
+        class CursorParticle {
+            constructor() {
+                this.x = mouse.x;
+                this.y = mouse.y;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = Math.random() > 0.5 ? '#B76E79' : '#F9F7F2';
+                this.life = 100; // Vida útil de la partícula
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= 2; // Se desvanece rápido
+                if (this.size > 0.1) this.size -= 0.05;
+            }
+            draw() {
+                cursorCtx.fillStyle = this.color;
+                cursorCtx.globalAlpha = Math.max(0, this.life / 100);
+                cursorCtx.beginPath();
+                cursorCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                cursorCtx.fill();
+            }
+        }
+
+        function animateCursorParticles() {
+            cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+            for (let i = 0; i < cursorParticles.length; i++) {
+                cursorParticles[i].update();
+                cursorParticles[i].draw();
+                if (cursorParticles[i].life <= 0) {
+                    cursorParticles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateCursorParticles);
+        }
+        animateCursorParticles();
+
+
+        // 6. ÁRBOL FRACTAL DE CORAZONES (WOW FACTOR ANIMADO)
+        const treeCanvas = document.getElementById('heart-tree');
+        const treeCtx = treeCanvas.getContext('2d');
+        treeCanvas.width = 500;
+        treeCanvas.height = 600;
+
+        // Función matemática para dibujar un corazón perfecto
+        function drawHeart(ctx, x, y, size) {
+            ctx.beginPath();
+            ctx.fillStyle = '#B76E79'; // Rose gold
+            ctx.moveTo(x, y - size * 0.3);
+            ctx.bezierCurveTo(x, y - size, x - size, y - size, x - size, y - size * 0.3);
+            ctx.bezierCurveTo(x - size, y + size * 0.5, x, y + size * 0.8, x, y + size * 1.2);
+            ctx.bezierCurveTo(x, y + size * 0.8, x + size, y + size * 0.5, x + size, y - size * 0.3);
+            ctx.bezierCurveTo(x + size, y - size, x, y - size, x, y - size * 0.3);
+            ctx.fill();
+        }
+
+        // Algoritmo recursivo para el crecimiento del árbol
+        function drawBranch(startX, startY, len, angle, branchWidth) {
+            treeCtx.beginPath();
+            treeCtx.save();
+            treeCtx.strokeStyle = 'rgba(249, 247, 242, 0.2)'; // Tronco sutil color crema
+            treeCtx.lineWidth = branchWidth;
+            treeCtx.translate(startX, startY);
+            treeCtx.rotate(angle * Math.PI / 180);
+            treeCtx.moveTo(0, 0);
+            treeCtx.lineTo(0, -len);
+            treeCtx.stroke();
+
+            // Caso base: si la rama es pequeña, florece un corazón
+            if (len < 12) {
+                drawHeart(treeCtx, 0, -len, 10);
+                treeCtx.restore();
+                return;
+            }
+
+            // Llamadas recursivas con retraso asíncrono para dar efecto de "crecimiento en vivo"
+            setTimeout(() => {
+                drawBranch(0, -len, len * 0.75, angle - 22, branchWidth * 0.7);
+                drawBranch(0, -len, len * 0.75, angle + 22, branchWidth * 0.7);
+            }, 60); // La velocidad a la que "crece" el amor
+            
+            treeCtx.restore();
+        }
+
+        // Trigger inteligente: El árbol solo crece cuando hacen scroll hasta verlo
+        let treeDrawn = false;
+        const treeObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !treeDrawn) {
+                drawBranch(250, 600, 140, 0, 12); // Raíz inicial
+                treeDrawn = true;
+            }
+        }, { threshold: 0.3 });
+        
+        const treeSection = document.getElementById('tree-section');
+        if (treeSection) {
+            treeObserver.observe(treeSection);
+        }
+
+        // 7. CORAZÓN 3D ROTATORIO MATEMÁTICO (GRAN FINAL WOW FACTOR)
+        const canvas3D = document.getElementById('heart-3d-canvas');
+        const ctx3D = canvas3D.getContext('2d');
+        canvas3D.width = 800;
+        canvas3D.height = 500;
+
+        const points3D = [];
+        const numPoints = 2500; // Alta densidad para un efecto galaxia/estrellas
+
+        // Generar la nube de puntos 3D basada en las matemáticas de un corazón
+        for (let i = 0; i < numPoints; i++) {
+            const t = Math.random() * Math.PI * 2;
+            // Distribuir la profundidad (eje Z)
+            const z = (Math.random() * 2 - 1); 
+            
+            // Hacer el centro grueso y las puntas en Z finas (como un volumen real)
+            const r = Math.pow(1 - Math.abs(z), 0.6) + (Math.random() * 0.1); 
+
+            // Paramétricas matemáticas de la forma del corazón perfectas
+            const x = r * 16 * Math.pow(Math.sin(t), 3);
+            // Invertido el Y con un negativo para que el corazón no quede boca abajo
+            const y = -r * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+
+            // Ruido galáctico sutil para dar la ilusión de "polvo de estrellas"
+            const noise = (Math.random() - 0.5) * 1.5;
+
+            points3D.push({
+                x: x + noise,
+                y: y + noise,
+                z: z * 12 + noise, // Escalar la profundidad 3D
+                baseSize: Math.random() * 1.5 + 0.5,
+                // Algunos puntos serán blancos para simular destellos mágicos
+                isSparkle: Math.random() > 0.9
+            });
+        }
+
+        let angleY = 0;
+        let heartAnimationId;
+
+        function animate3DHeart() {
+            ctx3D.clearRect(0, 0, canvas3D.width, canvas3D.height);
+            
+            angleY += 0.005; // Rotación lenta, nostálgica y majestuosa
+
+            const centerX = canvas3D.width / 2;
+            const centerY = canvas3D.height / 2 - 30;
+            const scaleFactor = 10; // Escala general
+            const perspective = 250;
+            
+            points3D.forEach(p => {
+                // Matemáticas de rotación 3D en el Eje Y
+                const rotatedX = p.x * Math.cos(angleY) - p.z * Math.sin(angleY);
+                const rotatedZ = p.z * Math.cos(angleY) + p.x * Math.sin(angleY);
+                const rotatedY = p.y; 
+
+                // Evitar puntos que quedarían detrás de la "cámara"
+                if (perspective + rotatedZ < 0) return; 
+
+                // Proyección de 3D a la pantalla 2D
+                const scale = perspective / (perspective + rotatedZ);
+                const screenX = centerX + rotatedX * scale * scaleFactor;
+                const screenY = centerY + rotatedY * scale * scaleFactor;
+
+                const currentSize = p.baseSize * scale;
+                
+                // Atenuar puntos que están lejos en el fondo (crea la ilusión de profundidad)
+                const depthAlpha = Math.max(0.05, Math.min(1, (rotatedZ + 15) / 30));
+                
+                ctx3D.globalAlpha = depthAlpha * 0.9;
+                ctx3D.fillStyle = p.isSparkle ? '#F9F7F2' : '#B76E79';
+                
+                ctx3D.beginPath();
+                ctx3D.arc(screenX, screenY, currentSize, 0, Math.PI * 2);
+                ctx3D.fill();
+            });
+
+            heartAnimationId = requestAnimationFrame(animate3DHeart);
+        }
+
+        // Rendimiento: Iniciar la animación 3D SOLO cuando el usuario baje al final
+        const finaleObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                if (!heartAnimationId) animate3DHeart();
+            } else {
+                if (heartAnimationId) {
+                    cancelAnimationFrame(heartAnimationId);
+                    heartAnimationId = null;
+                }
+            }
+        }, { threshold: 0.1 });
+
+        const finaleSection = document.getElementById('finale');
+        if (finaleSection) {
+            finaleObserver.observe(finaleSection);
+        }
+
+    </script>
+</body>
+</html>
