@@ -8,7 +8,7 @@
     <!-- Fuentes Elegantes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
     
     <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,11 +31,7 @@
             --font-script: 'Dancing Script', cursive;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body { 
             font-family: var(--font-main); 
@@ -45,15 +41,9 @@
             scroll-behavior: smooth; 
         }
 
-        h1, h2, h3, .serif { 
-            font-family: var(--font-title); 
-        }
+        h1, h2, h3, .serif { font-family: var(--font-title); }
+        .script { font-family: var(--font-script); }
 
-        .script {
-            font-family: var(--font-script);
-        }
-
-        /* Scrollbar personalizado */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--rose-gold); border-radius: 10px; }
@@ -62,753 +52,291 @@
            2. PANTALLA DE CARGA (PRELOADER)
            ========================================= */
         #preloader {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: var(--bg-darker);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 999999;
-            transition: opacity 1s ease, visibility 1s ease;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 999999; transition: opacity 1s ease, visibility 1s ease;
         }
-
         .heart-loader {
-            width: 50px;
-            height: 50px;
-            background: var(--rose-gold);
-            position: relative;
-            transform: rotate(45deg);
-            animation: heartbeat 1.2s infinite;
-            box-shadow: 0 0 40px var(--rose-gold-glow);
+            width: 50px; height: 50px; background: var(--rose-gold);
+            position: relative; transform: rotate(45deg);
+            animation: heartbeat 1.2s infinite; box-shadow: 0 0 40px var(--rose-gold-glow);
         }
-
         .heart-loader::before, .heart-loader::after {
-            content: '';
-            position: absolute;
-            width: 50px; height: 50px;
-            background: var(--rose-gold);
-            border-radius: 50%;
+            content: ''; position: absolute; width: 50px; height: 50px;
+            background: var(--rose-gold); border-radius: 50%;
         }
         .heart-loader::before { left: -25px; top: 0; }
         .heart-loader::after { top: -25px; left: 0; }
-
         .loading-text {
-            margin-top: 40px;
-            font-family: var(--font-script);
-            font-size: 2rem;
-            color: var(--rose-gold-light);
-            letter-spacing: 2px;
-            animation: pulseText 2s infinite;
+            margin-top: 40px; font-family: var(--font-script); font-size: 2rem;
+            color: var(--rose-gold-light); letter-spacing: 2px; animation: pulseText 2s infinite;
         }
-
         @keyframes heartbeat {
-            0% { transform: rotate(45deg) scale(0.8); }
-            15% { transform: rotate(45deg) scale(1.1); }
+            0%, 100% { transform: rotate(45deg) scale(0.8); }
+            15%, 45% { transform: rotate(45deg) scale(1.1); }
             30% { transform: rotate(45deg) scale(0.8); }
-            45% { transform: rotate(45deg) scale(1.1); }
-            100% { transform: rotate(45deg) scale(0.8); }
         }
-
-        @keyframes pulseText {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
+        @keyframes pulseText { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
         /* =========================================
            3. UTILIDADES Y ANIMACIONES DE REVELACIÓN
            ========================================= */
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(60px); 
-            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
-        }
-        .reveal.active { 
-            opacity: 1; 
-            transform: translateY(0); 
-        }
-        
-        .section-title { 
-            text-align: center; 
-            font-size: clamp(2.5rem, 5vw, 4.5rem); 
-            color: var(--rose-gold); 
-            margin-bottom: 2rem; 
-            text-shadow: 0 0 25px var(--rose-gold-glow); 
-        }
+        .reveal { opacity: 0; transform: translateY(60px); transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .section-title { text-align: center; font-size: clamp(2.5rem, 5vw, 4.5rem); color: var(--rose-gold); margin-bottom: 2rem; text-shadow: 0 0 25px var(--rose-gold-glow); }
 
         /* =========================================
-           4. LIENZOS GLOBALES (CURSORES Y ESTRELLAS)
+           4. LIENZOS GLOBALES Y REPRODUCTOR
            ========================================= */
-        #cursor-canvas { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100vw; height: 100vh; 
-            pointer-events: none; 
-            z-index: 99999; 
-        }
-
-        /* =========================================
-           5. REPRODUCTOR DE MÚSICA
-           ========================================= */
+        #cursor-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99999; }
         .music-player { 
-            position: fixed; 
-            bottom: 30px; right: 30px; 
-            background: rgba(15, 15, 15, 0.75); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(183, 110, 121, 0.3); 
-            padding: 12px 25px; 
-            border-radius: 50px; 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            z-index: 9999; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
-            transition: all 0.4s ease;
-        }
-        .music-player:hover {
-            border-color: var(--rose-gold);
-            box-shadow: 0 10px 40px var(--rose-gold-glow);
-            transform: translateY(-5px);
+            position: fixed; bottom: 30px; right: 30px; background: rgba(15, 15, 15, 0.75); 
+            backdrop-filter: blur(15px); border: 1px solid rgba(183, 110, 121, 0.3); padding: 12px 25px; 
+            border-radius: 50px; display: flex; align-items: center; gap: 15px; z-index: 9999; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6); transition: all 0.4s ease;
         }
         .play-btn { 
-            background: linear-gradient(135deg, var(--rose-gold), #964f59); 
-            color: #fff; 
-            border: none; 
-            width: 50px; height: 50px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.3rem; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .play-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--rose-gold-glow);
+            background: linear-gradient(135deg, var(--rose-gold), #964f59); color: #fff; border: none; 
+            width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; font-size: 1.3rem; 
         }
         .track-info { display: flex; flex-direction: column; }
         .track-title { font-weight: 600; font-size: 1rem; color: #fff; }
         .track-artist { font-size: 0.8rem; color: var(--rose-gold-light); }
 
         /* =========================================
-           6. SECCIÓN HERO (INICIO)
+           5. SECCIONES BÁSICAS (HERO, COUNTER, BANDERAS, REASONS, PROMISE, SECRET, POEM)
            ========================================= */
-        #hero { 
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            text-align: center; 
-            position: relative; 
-            overflow: hidden; 
-            background: radial-gradient(circle at center, #1a0f14 0%, var(--bg-darker) 100%);
-        }
-        #particles-canvas { 
-            position: absolute; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            z-index: 1; 
-            pointer-events: none; 
-        }
-        .hero-content { 
-            z-index: 2; 
-            padding: 20px; 
-            max-width: 900px; 
-            animation: fadeIn 2s ease-out forwards;
-        }
-        .hero-pretitle { 
-            color: var(--rose-gold-light); 
-            letter-spacing: 6px; 
-            text-transform: uppercase; 
-            font-size: 1.1rem; 
-            margin-bottom: 25px; 
-            display: block; 
-            font-weight: 300;
-        }
-        .hero-title { 
-            font-size: clamp(3.5rem, 8vw, 7rem); 
-            line-height: 1.1; 
-            margin-bottom: 35px; 
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        .hero-title span { 
-            color: var(--rose-gold); 
-            font-style: italic; 
-            text-shadow: 0 0 40px var(--rose-gold-glow);
-        }
-        .hero-desc { 
-            font-size: 1.3rem; 
-            font-weight: 300; 
-            line-height: 1.9; 
-            color: rgba(249, 247, 242, 0.8); 
-        }
-        .hero-instruction {
-            margin-top: 30px;
-            font-family: var(--font-script);
-            color: var(--rose-gold);
-            font-size: 1.5rem;
-            opacity: 0.8;
-        }
-        .scroll-down { 
-            margin-top: 60px; 
-            font-size: 2.5rem; 
-            color: var(--rose-gold); 
-            animation: bounce 2.5s infinite; 
-            opacity: 0.7;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes bounce { 
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 
-            40% { transform: translateY(-25px); } 
-            60% { transform: translateY(-12px); } 
-        }
+        #hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; background: radial-gradient(circle at center, #1a0f14 0%, var(--bg-darker) 100%); }
+        #particles-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .hero-content { z-index: 2; padding: 20px; max-width: 900px; animation: fadeIn 2s ease-out forwards; }
+        .hero-pretitle { color: var(--rose-gold-light); letter-spacing: 6px; text-transform: uppercase; font-size: 1.1rem; margin-bottom: 25px; display: block; font-weight: 300; }
+        .hero-title { font-size: clamp(3.5rem, 8vw, 7rem); line-height: 1.1; margin-bottom: 35px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .hero-title span { color: var(--rose-gold); font-style: italic; text-shadow: 0 0 40px var(--rose-gold-glow); }
+        .hero-desc { font-size: 1.3rem; font-weight: 300; line-height: 1.9; color: rgba(249, 247, 242, 0.8); }
+        .scroll-down { margin-top: 60px; font-size: 2.5rem; color: var(--rose-gold); animation: bounce 2.5s infinite; opacity: 0.7; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-25px); } 60% { transform: translateY(-12px); } }
+
+        #counter { padding: 120px 20px; background: var(--bg-card); position: relative; text-align: center; }
+        .counter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 900px; margin: 0 auto; }
+        .time-box { background: rgba(255,255,255,0.02); border: 1px solid var(--rose-gold-glow); border-radius: 20px; padding: 30px 20px; min-width: 150px; flex: 1; box-shadow: 0 15px 30px rgba(0,0,0,0.5); backdrop-filter: blur(5px); transition: transform 0.3s; }
+        .time-box:hover { transform: translateY(-10px); background: rgba(183, 110, 121, 0.05); }
+        .time-num { font-size: 4rem; font-family: var(--font-title); color: var(--rose-gold); display: block; margin-bottom: 5px; text-shadow: 0 0 15px var(--rose-gold-glow); }
+        .time-label { font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+
+        #banderas { background: linear-gradient(to bottom, var(--bg-card), var(--bg-dark)); padding: 150px 20px; position: relative; }
+        .memories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 50px; max-width: 1200px; margin: 0 auto; }
+        .memory-card { background: var(--bg-darker); border-radius: 25px; overflow: hidden; border: 1px solid rgba(183,110,121,0.15); transition: all 0.5s ease; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .memory-img { width: 100%; height: 400px; object-fit: cover; filter: brightness(0.8) contrast(1.1); transition: 0.5s; }
+        .memory-card:hover .memory-img { filter: brightness(1) contrast(1.1); }
+        .memory-text { padding: 40px 30px; text-align: center; position: relative; }
+        .memory-text h3 { color: var(--rose-gold); margin-bottom: 20px; font-size: 2rem; }
+        .memory-text p { color: var(--text-muted); line-height: 1.8; font-size: 1.05rem; }
+
+        #reasons { padding: 120px 20px; background: var(--bg-dark); overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+        .carousel-container { position: relative; width: 300px; height: 400px; perspective: 1000px; margin-top: 50px; }
+        .carousel { width: 100%; height: 100%; position: absolute; transform-style: preserve-3d; animation: rotateCarousel 25s infinite linear; }
+        .carousel-item { position: absolute; width: 280px; height: 380px; background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border: 1px solid var(--rose-gold-glow); border-radius: 20px; padding: 30px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+        .carousel-item i { font-size: 3rem; color: var(--rose-gold); margin-bottom: 20px; }
+        .carousel-item p { font-size: 1.1rem; line-height: 1.6; color: var(--text-light); font-style: italic; }
+        @keyframes rotateCarousel { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+
+        #promise { padding: 150px 20px; background: linear-gradient(to bottom, var(--bg-dark), var(--bg-card)); }
+        .promise-container { display: flex; flex-wrap: wrap; gap: 60px; max-width: 1200px; margin: 0 auto; align-items: center; }
+        .rings-display { flex: 1 1 400px; position: relative; }
+        .rings-display img { width: 100%; border-radius: 30px; box-shadow: 0 40px 80px rgba(0,0,0,0.9); border: 2px solid rgba(183, 110, 121, 0.4); }
+        .rings-tag { position: absolute; bottom: -25px; right: -25px; background: linear-gradient(135deg, var(--rose-gold), #8a4852); color: white; padding: 20px 40px; border-radius: 15px; font-weight: 700; letter-spacing: 3px; box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+        .promise-letter-box { flex: 1 1 400px; background: rgba(255,255,255,0.015); border: 1px solid var(--rose-gold); padding: 60px; border-radius: 25px; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+        .promise-letter-box h3 { text-align: center; font-size: 2.8rem; color: var(--rose-gold); margin-bottom: 35px; position: relative; z-index: 2; }
+        .promise-letter-box p { font-size: 1.15rem; line-height: 1.9; color: rgba(249, 247, 242, 0.9); margin-bottom: 25px; font-weight: 300; position: relative; z-index: 2; text-align: justify; }
+        
+        #secret-message { padding: 100px 20px; background: var(--bg-darker); display: flex; flex-direction: column; align-items: center; }
+        .envelope-wrapper { position: relative; width: 320px; height: 220px; background: #1a1a1a; border-radius: 0 0 10px 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); cursor: pointer; margin-top: 40px; transition: transform 0.4s; }
+        .envelope-flap { position: absolute; top: 0; left: 0; width: 0; height: 0; border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 120px solid #2a2a2a; transform-origin: top; transition: transform 0.6s ease-in-out; z-index: 4; }
+        .envelope-body { position: absolute; bottom: 0; left: 0; width: 0; height: 0; border-left: 160px solid #222; border-right: 160px solid #222; border-bottom: 110px solid #333; z-index: 3; border-radius: 0 0 10px 10px; }
+        .envelope-letter { position: absolute; bottom: 10px; left: 10px; width: 300px; height: 190px; background: #f9f7f2; color: #333; padding: 20px; border-radius: 5px; text-align: center; font-family: var(--font-script); font-size: 1.3rem; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: transform 0.6s ease-in-out; z-index: 2; display: flex; flex-direction: column; justify-content: center; }
+        .envelope-wrapper.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+        .envelope-wrapper.open .envelope-letter { transform: translateY(-120px); z-index: 5; }
+
+        #poem-tree { padding: 150px 20px; display: flex; align-items: center; justify-content: center; background: var(--bg-dark); position: relative; }
+        .poem-container { display: flex; flex-wrap: wrap; max-width: 1200px; width: 100%; gap: 60px; align-items: center; position: relative; z-index: 2; }
+        .poem-text { flex: 1 1 400px; text-align: left; background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(10,10,10,0.9)); padding: 60px; border-radius: 25px; border: 1px solid rgba(183, 110, 121, 0.3); }
+        .poem-text h2 { color: var(--rose-gold); font-size: 3rem; margin-bottom: 30px; text-shadow: 0 0 15px var(--rose-gold-glow); }
+        .poem-text p { font-size: 1.25rem; line-height: 2.2; color: var(--text-light); font-style: italic; margin-bottom: 20px; font-weight: 300; text-align: justify; }
+        .paris-canvas-container { flex: 1 1 400px; display: flex; justify-content: center; align-items: center; position: relative; }
+        #paris-canvas { width: 100%; max-width: 500px; aspect-ratio: 4/5; display: block; filter: drop-shadow(0 0 30px rgba(183,110,121,0.25)); }
+
 
         /* =========================================
-           7. SECCIÓN CONTADOR DE AMOR
+           6. SECUENCIA FINAL SUPREMA (UNIVERSO -> APAGÓN -> CORAZÓN 3D)
            ========================================= */
-        #counter {
-            padding: 120px 20px;
-            background: var(--bg-card);
+        #finale-sequence {
             position: relative;
-            text-align: center;
-        }
-        .counter-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .time-box {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--rose-gold-glow);
-            border-radius: 20px;
-            padding: 30px 20px;
-            min-width: 150px;
-            flex: 1;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            transition: transform 0.3s;
-        }
-        .time-box:hover {
-            transform: translateY(-10px);
-            background: rgba(183, 110, 121, 0.05);
-        }
-        .time-num {
-            font-size: 4rem;
-            font-family: var(--font-title);
-            color: var(--rose-gold);
-            display: block;
-            margin-bottom: 5px;
-            text-shadow: 0 0 15px var(--rose-gold-glow);
-        }
-        .time-label {
-            font-size: 0.9rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-        .counter-msg {
-            margin-top: 50px;
-            font-family: var(--font-script);
-            font-size: 2.5rem;
-            color: var(--rose-gold-light);
-        }
-
-        /* =========================================
-           8. MEMORIAS - BANDERAS
-           ========================================= */
-        #banderas { 
-            background: linear-gradient(to bottom, var(--bg-card), var(--bg-dark)); 
-            padding: 150px 20px; 
-            position: relative;
-        }
-        .memories-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-            gap: 50px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-        }
-        .memory-card { 
-            background: var(--bg-darker); 
-            border-radius: 25px; 
-            overflow: hidden; 
-            border: 1px solid rgba(183,110,121,0.15); 
-            transition: all 0.5s ease; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-        .memory-card:hover { 
-            border-color: var(--rose-gold); 
-            transform: translateY(-15px) scale(1.02); 
-            box-shadow: 0 30px 60px rgba(183, 110, 121, 0.2); 
-        }
-        .memory-img { 
-            width: 100%; 
-            height: 400px; 
-            object-fit: cover; 
-            filter: brightness(0.8) contrast(1.1);
-            transition: 0.5s;
-        }
-        .memory-card:hover .memory-img {
-            filter: brightness(1) contrast(1.1);
-        }
-        .memory-text { 
-            padding: 40px 30px; 
-            text-align: center; 
-            position: relative;
-        }
-        .memory-text::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 50px; height: 3px;
-            background: var(--rose-gold);
-        }
-        .memory-text h3 { 
-            color: var(--rose-gold); 
-            margin-bottom: 20px; 
-            font-size: 2rem; 
-        }
-        .memory-text p { 
-            color: var(--text-muted); 
-            line-height: 1.8; 
-            font-size: 1.05rem;
-        }
-
-        /* =========================================
-           9. CARRUSEL 3D "RAZONES" (NUEVO)
-           ========================================= */
-        #reasons {
-            padding: 120px 20px;
-            background: var(--bg-dark);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .carousel-container {
-            position: relative;
-            width: 300px;
-            height: 400px;
-            perspective: 1000px;
-            margin-top: 50px;
-        }
-        .carousel {
             width: 100%;
-            height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
-            animation: rotateCarousel 25s infinite linear;
-        }
-        .carousel:hover {
-            animation-play-state: paused;
-        }
-        .carousel-item {
-            position: absolute;
-            width: 280px;
-            height: 380px;
-            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-            border: 1px solid var(--rose-gold-glow);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
-            /* Las posiciones se dan en línea en el HTML */
-        }
-        .carousel-item i {
-            font-size: 3rem;
-            color: var(--rose-gold);
-            margin-bottom: 20px;
-        }
-        .carousel-item p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-light);
-            font-style: italic;
-        }
-        @keyframes rotateCarousel {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(360deg); }
+            height: 100vh;
+            min-height: 800px;
+            overflow: hidden;
+            background: #000;
         }
 
-        /* =========================================
-           10. PROMESA Y CARTA (ANILLOS)
-           ========================================= */
-        #promise { 
-            padding: 150px 20px; 
-            background: linear-gradient(to bottom, var(--bg-dark), var(--bg-card)); 
+        /* FASE 1: Universo y Carta de Viaje */
+        #phase1-universe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 2.5s ease-in-out;
+            z-index: 10;
         }
-        .promise-container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 60px; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            align-items: center; 
+        .universe-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 4px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: moveStars 100s linear infinite;
+            z-index: -1;
         }
-        .rings-display { 
-            flex: 1 1 400px; 
-            position: relative; 
-        }
-        .rings-display img { 
-            width: 100%; 
-            border-radius: 30px; 
-            box-shadow: 0 40px 80px rgba(0,0,0,0.9); 
-            border: 2px solid rgba(183, 110, 121, 0.4); 
-            transition: transform 0.5s;
-        }
-        .rings-display:hover img {
-            transform: scale(1.03);
-        }
-        .rings-tag { 
-            position: absolute; 
-            bottom: -25px; 
-            right: -25px; 
-            background: linear-gradient(135deg, var(--rose-gold), #8a4852); 
-            color: white; 
-            padding: 20px 40px; 
-            border-radius: 15px; 
-            font-weight: 700; 
-            letter-spacing: 3px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        @keyframes moveStars {
+            from { background-position: 0 0, 40px 60px, 130px 270px; }
+            to { background-position: -550px -550px, -310px -290px, -120px -280px; }
         }
         
-        .promise-letter-box { 
-            flex: 1 1 400px; 
-            background: rgba(255,255,255,0.015); 
-            border: 1px solid var(--rose-gold); 
-            padding: 60px; 
-            border-radius: 25px; 
-            box-shadow: 0 25px 60px rgba(0,0,0,0.7); 
-            position: relative; 
-            overflow: hidden; 
-            backdrop-filter: blur(10px);
+        .grand-envelope-wrapper {
+            position: relative; width: 340px; height: 240px;
+            background: #111; border-radius: 0 0 15px 15px;
+            box-shadow: 0 0 50px rgba(183, 110, 121, 0.4);
+            cursor: pointer; transition: transform 0.5s;
         }
-        .promise-letter-box::before { 
-            content: '"'; 
-            position: absolute; 
-            top: -10px; left: 20px; 
-            font-size: 10rem; 
-            color: rgba(183, 110, 121, 0.08); 
-            font-family: var(--font-title); 
-            line-height: 1; 
+        .grand-envelope-wrapper:hover { transform: scale(1.05); box-shadow: 0 0 80px rgba(183, 110, 121, 0.8); }
+        .grand-envelope-flap {
+            position: absolute; top: 0; left: 0; width: 0; height: 0;
+            border-left: 170px solid transparent; border-right: 170px solid transparent;
+            border-top: 130px solid #2a2a2a; transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); z-index: 4;
         }
-        .promise-icon { 
-            font-size: 3rem; 
-            color: var(--rose-gold); 
-            margin-bottom: 25px; 
-            display: block; 
-            text-align: center; 
-            animation: pulseText 3s infinite;
+        .grand-envelope-body {
+            position: absolute; bottom: 0; left: 0; width: 0; height: 0;
+            border-left: 170px solid #222; border-right: 170px solid #222;
+            border-bottom: 120px solid #333; z-index: 3; border-radius: 0 0 15px 15px;
         }
-        .promise-letter-box h3 { 
-            text-align: center; 
-            font-size: 2.8rem; 
-            color: var(--rose-gold); 
-            margin-bottom: 35px; 
-            position: relative; z-index: 2; 
+        .grand-envelope-letter {
+            position: absolute; bottom: 10px; left: 10px;
+            width: 320px; height: 350px; background: #f9f7f2; color: #111;
+            padding: 30px 20px; border-radius: 8px; text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2;
+            display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
         }
-        .promise-letter-box p { 
-            font-size: 1.15rem; 
-            line-height: 1.9; 
-            color: rgba(249, 247, 242, 0.9); 
-            margin-bottom: 25px; 
-            font-weight: 300; 
-            position: relative; z-index: 2; 
-            text-align: justify; 
+        .grand-envelope-wrapper.open .grand-envelope-flap { transform: rotateX(180deg); z-index: 1; }
+        .grand-envelope-wrapper.open .grand-envelope-letter { transform: translateY(-160px); z-index: 5; }
+        
+        .grand-letter-title { font-size: 1.8rem; color: var(--rose-gold); margin-bottom: 15px; line-height: 1.2; }
+        .grand-letter-text { font-size: 1.05rem; line-height: 1.6; font-family: var(--font-main); color: #333; text-align: justify; margin-bottom: 20px; }
+        .btn-sellar {
+            background: linear-gradient(135deg, #e84a5f, #B76E79); color: white;
+            border: none; padding: 12px 25px; border-radius: 30px;
+            font-family: var(--font-main); font-weight: 600; font-size: 1rem;
+            cursor: pointer; box-shadow: 0 5px 15px rgba(232, 74, 95, 0.5);
+            transition: transform 0.3s; margin-top: auto;
         }
-        .promise-letter-box p:last-child { 
-            margin-bottom: 0; 
-            margin-top: 40px;
-            font-style: italic; 
-            text-align: right; 
-            color: var(--rose-gold-light); 
-            font-weight: 600; 
-            font-size: 1.3rem;
+        .btn-sellar:hover { transform: scale(1.1); }
+        .envelope-hint { margin-top: 40px; color: var(--rose-gold-light); font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; animation: pulseText 2s infinite; transition: opacity 0.5s; }
+
+        /* FASE 2: Apagón (Blackout) */
+        #phase2-blackout {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; opacity: 0; pointer-events: none; z-index: 20;
+            transition: opacity 1.5s ease-in-out;
         }
 
-        /* =========================================
-           11. SOBRE SECRETO (INTERACTIVO)
-           ========================================= */
-        #secret-message {
-            padding: 100px 20px;
-            background: var(--bg-darker);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .envelope-wrapper {
-            position: relative;
-            width: 320px;
-            height: 220px;
-            background: #1a1a1a;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            cursor: pointer;
-            margin-top: 40px;
-            transition: transform 0.4s;
-        }
-        .envelope-wrapper:hover {
-            transform: translateY(-15px);
-        }
-        .envelope-flap {
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            border-top: 120px solid #2a2a2a;
-            transform-origin: top;
-            transition: transform 0.6s ease-in-out;
-            z-index: 4;
-        }
-        .envelope-body {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 160px solid #222;
-            border-right: 160px solid #222;
-            border-bottom: 110px solid #333;
-            z-index: 3;
-            border-radius: 0 0 10px 10px;
-        }
-        .envelope-letter {
-            position: absolute;
-            bottom: 10px; left: 10px;
-            width: 300px; height: 190px;
-            background: #f9f7f2;
-            color: #333;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            font-family: var(--font-script);
-            font-size: 1.3rem;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: transform 0.6s ease-in-out;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .envelope-wrapper.open .envelope-flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-        .envelope-wrapper.open .envelope-letter {
-            transform: translateY(-120px);
-            z-index: 5;
-        }
-        .envelope-instruction {
-            margin-top: 30px;
-            color: var(--rose-gold);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: pulseText 2s infinite;
-        }
-
-        /* =========================================
-           12. CIELO ESTRELLADO (CANVAS INTERACTIVO)
-           ========================================= */
-        #starry-night {
-            position: relative;
-            padding: 100px 20px;
-            background: linear-gradient(to bottom, var(--bg-darker), #0a1128);
-            text-align: center;
+        /* FASE 3: Corazón Supremo y Lluvia de Amor */
+        #phase3-supreme {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; z-index: 30;
+            background: radial-gradient(circle at center, #1f0b12 0%, #000000 100%);
+            transition: opacity 3s ease-in-out;
             overflow: hidden;
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
-        #stars-canvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
+        #supreme-heart-canvas {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100%; max-width: 1200px; height: 800px; mix-blend-mode: screen; z-index: 1;
         }
-        .starry-content {
-            position: relative;
-            z-index: 2;
-            pointer-events: none;
+        .supreme-text-container {
+            position: relative; z-index: 5; text-align: center; pointer-events: none;
         }
-        .starry-content h2 {
-            font-size: 3.5rem;
+        /* Texto hecho de corazones (Pattern de SVG) */
+        .hearts-text {
+            /* Patrón de corazoncitos repetidos para pintar el texto */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff1493' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            background-size: 25px 25px;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-family: var(--font-title);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -2px;
+            text-shadow: 0 0 30px rgba(255, 20, 147, 0.4); /* Glow detrás del texto transparente */
+            animation: pulseHeartText 2s infinite alternate;
+        }
+        @keyframes pulseHeartText {
+            0% { filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.5)); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 30px rgba(255, 20, 147, 0.9)); transform: scale(1.05); }
+        }
+        .hearts-subtitle {
+            font-family: var(--font-script);
+            font-size: clamp(1.5rem, 5vw, 3rem);
             color: #fff;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            text-shadow: 0 0 20px #ff1493, 0 0 40px #ff1493;
         }
-        .starry-content p {
-            font-size: 1.2rem;
-            color: rgba(255,255,255,0.8);
-            max-width: 600px;
-            margin: 20px auto 0;
+
+        /* Palabras y emojis flotantes */
+        #floating-words-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; pointer-events: none; overflow: hidden;
+        }
+        .floating-word {
+            position: absolute; bottom: -100px;
+            color: #fff; font-family: var(--font-script);
+            text-shadow: 0 0 10px rgba(255,20,147,0.8);
+            animation: floatUpWord linear forwards;
+            opacity: 0;
+        }
+        @keyframes floatUpWord {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-120vh) scale(1.5) rotate(15deg); opacity: 0; }
         }
 
         /* =========================================
-           13. POEMA Y PARÍS/GRANADA (CÓDIGO MÁGICO)
-           ========================================= */
-        #poem-tree { 
-            padding: 150px 20px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background: var(--bg-dark); 
-            position: relative; 
-        }
-        .poem-container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            max-width: 1200px; 
-            width: 100%; 
-            gap: 60px; 
-            align-items: center; 
-            position: relative; z-index: 2; 
-        }
-        .poem-text { 
-            flex: 1 1 400px; 
-            text-align: left; 
-            background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(10,10,10,0.9)); 
-            padding: 60px; 
-            border-radius: 25px; 
-            border: 1px solid rgba(183, 110, 121, 0.3); 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
-            position: relative; 
-            overflow: hidden; 
-        }
-        .poem-text::before { 
-            content: ''; 
-            position: absolute; 
-            top: 0; left: 0; 
-            width: 100%; height: 6px; 
-            background: linear-gradient(90deg, transparent, var(--rose-gold), transparent); 
-        }
-        .poem-text h2 { 
-            color: var(--rose-gold); 
-            font-size: 3rem; 
-            margin-bottom: 30px; 
-            text-shadow: 0 0 15px var(--rose-gold-glow); 
-        }
-        .poem-text p { 
-            font-size: 1.25rem; 
-            line-height: 2.2; 
-            color: var(--text-light); 
-            font-style: italic; 
-            margin-bottom: 20px; 
-            font-weight: 300; 
-            text-align: justify; 
-        }
-        .paris-canvas-container { 
-            flex: 1 1 400px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            position: relative; 
-        }
-        #paris-canvas { 
-            width: 100%; 
-            max-width: 500px; 
-            aspect-ratio: 4/5; 
-            display: block; 
-            filter: drop-shadow(0 0 30px rgba(183,110,121,0.25)); 
-        }
-
-        /* =========================================
-           14. EL GRAN FINAL (CORAZÓN 3D)
-           ========================================= */
-        #finale { 
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            background: radial-gradient(circle at center, #1a0f14 0%, var(--bg-darker) 80%); 
-            position: relative;
-        }
-        #heart-3d-canvas { 
-            width: 100%; 
-            max-width: 900px; 
-            height: 600px; 
-            mix-blend-mode: screen; 
-            z-index: 1;
-        }
-        .finale-msg { 
-            font-size: clamp(3rem, 8vw, 5rem); 
-            text-align: center; 
-            margin-top: -80px; 
-            z-index: 10; 
-            text-shadow: 0 0 30px rgba(0,0,0,0.9); 
-            position: relative;
-        }
-        .finale-msg span { 
-            color: var(--rose-gold); 
-            font-style: italic; 
-            display: block; 
-            font-size: 1.3em; 
-            text-shadow: 0 0 40px var(--rose-gold-glow); 
-            margin-top: 15px; 
-            white-space: nowrap;
-        }
-
-        /* =========================================
-           15. RESPONSIVE MOBILE (OPTIMIZACIÓN CELULARES)
+           15. RESPONSIVE MOBILE
            ========================================= */
         @media (max-width: 768px) {
-            /* Ajustes Generales de Espaciado */
             #counter, #banderas, #reasons, #promise, #secret-message, #starry-night, #poem-tree { padding: 80px 20px; }
             .section-title { font-size: 2.3rem; margin-bottom: 1.5rem; }
-            
-            /* Ajustes del Hero */
             .hero-title { font-size: 3rem; margin-bottom: 20px; }
-            .hero-pretitle { font-size: 0.9rem; margin-bottom: 15px; }
-            .hero-desc { font-size: 1.05rem; line-height: 1.6;}
-            .hero-instruction { font-size: 1.2rem; }
-            
-            /* Reproductor de Música */
             .music-player { bottom: 15px; right: 15px; padding: 10px 15px; gap: 10px; border-radius: 40px; }
             .play-btn { width: 40px; height: 40px; font-size: 1rem; }
-            .track-title { font-size: 0.8rem !important; }
-            .track-artist { font-size: 0.65rem !important; }
-            
-            /* Contador */
-            .time-box { padding: 20px 10px; min-width: 120px; }
-            .time-num { font-size: 2.5rem; }
-
-            /* Memorias */
             .memory-img { height: 280px; }
-            .memory-text { padding: 25px 20px; }
-            .memory-text h3 { font-size: 1.6rem; }
-            .memory-text p { font-size: 0.95rem; }
-            
-            /* Promesa y Carta */
-            .rings-tag { right: 10px; bottom: -15px; font-size: 0.85rem; padding: 12px 25px; }
             .promise-letter-box { padding: 35px 20px; border-radius: 15px; }
-            .promise-letter-box::before { font-size: 6rem; left: 10px; top: 0; }
-            .promise-letter-box h3 { font-size: 2rem; margin-bottom: 20px; }
-            .promise-letter-box p { font-size: 1.05rem; line-height: 1.7; }
-            .promise-letter-box p:last-child { font-size: 1.1rem; }
-            
-            /* Poema y París */
+            .promise-letter-box h3 { font-size: 2rem; }
             .poem-text { padding: 40px 20px; }
-            .poem-text h2 { font-size: 2.2rem; margin-bottom: 20px; }
-            .poem-text p { font-size: 1.1rem; line-height: 1.8; }
-            #paris-canvas { max-width: 100%; height: auto; }
-            
-            /* Final */
-            .finale-msg { margin-top: -40px; font-size: 2.2rem; }
-            .finale-msg span { font-size: 1.1em; }
+            .hearts-text { font-size: 2.8rem; background-size: 15px 15px; line-height: 1; letter-spacing: -1px; }
+            .grand-envelope-wrapper { width: 300px; height: 200px; }
+            .grand-envelope-flap { border-left: 150px solid transparent; border-right: 150px solid transparent; border-top: 110px solid #2a2a2a; }
+            .grand-envelope-body { border-left: 150px solid #222; border-right: 150px solid #222; border-bottom: 100px solid #333; }
+            .grand-envelope-letter { width: 280px; height: 320px; padding: 20px 15px; }
+            .grand-letter-title { font-size: 1.5rem; margin-bottom: 10px;}
+            .grand-letter-text { font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;}
+            .btn-sellar { padding: 10px 20px; font-size: 0.9rem;}
         }
     </style>
 </head>
@@ -820,7 +348,6 @@
         <div class="loading-text">Cargando nuestra magia...</div>
     </div>
 
-    <!-- LIENZO GLOBAL PARA CURSOR INTERACTIVO -->
     <canvas id="cursor-canvas"></canvas>
 
     <!-- REPRODUCTOR MÚSICA -->
@@ -832,7 +359,6 @@
             <span class="track-title">Sabes</span>
             <span class="track-artist">Reik / Mi Neto</span>
         </div>
-        <!-- ARCHIVO DE AUDIO EXACTO -->
         <audio id="bg-music" loop>
             <source src="musica.mp3" type="audio/mpeg">
         </audio>
@@ -856,22 +382,10 @@
     <section id="counter">
         <h2 class="section-title serif reveal">El Tiempo a Tu Lado</h2>
         <div class="counter-container reveal">
-            <div class="time-box">
-                <span class="time-num" id="t-days">00</span>
-                <span class="time-label">Días</span>
-            </div>
-            <div class="time-box">
-                <span class="time-num" id="t-hours">00</span>
-                <span class="time-label">Horas</span>
-            </div>
-            <div class="time-box">
-                <span class="time-num" id="t-minutes">00</span>
-                <span class="time-label">Minutos</span>
-            </div>
-            <div class="time-box">
-                <span class="time-num" id="t-seconds">00</span>
-                <span class="time-label">Segundos</span>
-            </div>
+            <div class="time-box"><span class="time-num" id="t-days">00</span><span class="time-label">Días</span></div>
+            <div class="time-box"><span class="time-num" id="t-hours">00</span><span class="time-label">Horas</span></div>
+            <div class="time-box"><span class="time-num" id="t-minutes">00</span><span class="time-label">Minutos</span></div>
+            <div class="time-box"><span class="time-num" id="t-seconds">00</span><span class="time-label">Segundos</span></div>
         </div>
         <p class="counter-msg reveal">Y contando para la eternidad...</p>
     </section>
@@ -883,7 +397,6 @@
             Donde el tiempo se detuvo y el frío fue opacado por la inmensidad de nuestras sonrisas.
         </p>
         <div class="memories-grid reveal">
-            <!-- FOTO 1 -->
             <div class="memory-card">
                 <img src="foto_nosotros_peluches.jpg" class="memory-img" alt="Nosotros con peluches">
                 <div class="memory-text">
@@ -891,7 +404,6 @@
                     <p>Nuestras enormes sonrisas abrazando a nuestros peluches. Ese instante donde todo a nuestro alrededor desapareció y solo quedó la calidez de nuestra alegría.</p>
                 </div>
             </div>
-            <!-- FOTO 2 -->
             <div class="memory-card">
                 <img src="foto_dos_peluches.jpg" class="memory-img" alt="Los dos peluches">
                 <div class="memory-text">
@@ -899,7 +411,6 @@
                     <p>Ellos, los fieles amigos y mudos testigos de nuestras miradas aquella noche. Dos peluches que ahora guardan para siempre la esencia de nuestro amor.</p>
                 </div>
             </div>
-            <!-- FOTO 3 -->
             <div class="memory-card">
                 <img src="foto_favorita.jpg" class="memory-img" alt="Foto favorita">
                 <div class="memory-text">
@@ -915,26 +426,11 @@
         <h2 class="section-title serif reveal">Mil Razones Para Amarte</h2>
         <div class="carousel-container reveal">
             <div class="carousel">
-                <div class="carousel-item" style="transform: rotateY(0deg) translateZ(250px);">
-                    <i class="fas fa-heart"></i>
-                    <p>"Porque tu sonrisa tiene el poder de iluminar hasta mi día más oscuro."</p>
-                </div>
-                <div class="carousel-item" style="transform: rotateY(72deg) translateZ(250px);">
-                    <i class="fas fa-shield-alt"></i>
-                    <p>"Porque en tus brazos encontré el refugio que mi alma llevaba buscando."</p>
-                </div>
-                <div class="carousel-item" style="transform: rotateY(144deg) translateZ(250px);">
-                    <i class="fas fa-laugh-beam"></i>
-                    <p>"Porque nuestras risas juntos son la mejor melodía que he escuchado en mi vida."</p>
-                </div>
-                <div class="carousel-item" style="transform: rotateY(216deg) translateZ(250px);">
-                    <i class="fas fa-hand-holding-heart"></i>
-                    <p>"Porque me aceptas como soy, con mis luces y mis sombras."</p>
-                </div>
-                <div class="carousel-item" style="transform: rotateY(288deg) translateZ(250px);">
-                    <i class="fas fa-infinity"></i>
-                    <p>"Porque sé que juntos somos más fuertes y podemos contra cualquier tormenta."</p>
-                </div>
+                <div class="carousel-item" style="transform: rotateY(0deg) translateZ(250px);"><i class="fas fa-heart"></i><p>"Porque tu sonrisa tiene el poder de iluminar hasta mi día más oscuro."</p></div>
+                <div class="carousel-item" style="transform: rotateY(72deg) translateZ(250px);"><i class="fas fa-shield-alt"></i><p>"Porque en tus brazos encontré el refugio que mi alma llevaba buscando."</p></div>
+                <div class="carousel-item" style="transform: rotateY(144deg) translateZ(250px);"><i class="fas fa-laugh-beam"></i><p>"Porque nuestras risas juntos son la mejor melodía que he escuchado en mi vida."</p></div>
+                <div class="carousel-item" style="transform: rotateY(216deg) translateZ(250px);"><i class="fas fa-hand-holding-heart"></i><p>"Porque me aceptas como soy, con mis luces y mis sombras."</p></div>
+                <div class="carousel-item" style="transform: rotateY(288deg) translateZ(250px);"><i class="fas fa-infinity"></i><p>"Porque sé que juntos somos más fuertes y podemos contra cualquier tormenta."</p></div>
             </div>
         </div>
     </section>
@@ -943,12 +439,10 @@
     <section id="promise">
         <h2 class="section-title serif reveal">Nuestra Alianza</h2>
         <div class="promise-container">
-            <!-- ANILLOS -->
             <div class="rings-display reveal">
                 <img src="anillos.jpg" alt="Nuestros Anillos">
                 <div class="rings-tag serif">POR Y PARA SIEMPRE</div>
             </div>
-            <!-- CARTA PROFUNDA -->
             <div class="promise-letter-box reveal">
                 <i class="fas fa-infinity promise-icon"></i>
                 <h3 class="serif">Te Elijo, A Pesar de Todo</h3>
@@ -969,22 +463,12 @@
             <div class="envelope-body"></div>
             <div class="envelope-letter">
                 <span style="color:var(--rose-gold); font-size:2rem; margin-bottom:10px;">❤</span>
-                "No importa dónde estemos ni los años que pasen. Mi corazón ya tiene dueño, y siempre serás tú."
+                "No importa dónde estemos ni los años que pasen. Mi corazón ya tiene dueña, y siempre serás tú."
             </div>
         </div>
     </section>
 
-    <!-- 7. CIELO ESTRELLADO (CANVAS INTERACTIVO) -->
-    <section id="starry-night">
-        <canvas id="stars-canvas"></canvas>
-        <div class="starry-content reveal">
-            <h2 class="script">Bajo las Estrellas</h2>
-            <p>El universo entero conspiró a través de millones de años luz solo para que nuestros caminos se cruzaran en el momento exacto.</p>
-            <p style="font-size:0.9rem; color:var(--rose-gold); margin-top:20px; text-transform:uppercase; letter-spacing:2px;">(Pasa tu dedo o ratón por las estrellas)</p>
-        </div>
-    </section>
-
-    <!-- 8. POEMA Y PARÍS/GRANADA EN CÓDIGO MÁGICO -->
+    <!-- 7. POEMA Y PARÍS/GRANADA EN CÓDIGO MÁGICO -->
     <section id="poem-tree">
         <div class="poem-container">
             <div class="poem-text reveal">
@@ -993,24 +477,48 @@
                 <p>Y si nuestro amor pudiera saborearse, sin duda sería como una granada. Fuerte y resistente por fuera, de un rojo apasionado. A veces difícil de descifrar, pero cuando finalmente se abre, te entrega una dulzura infinita.</p>
                 <p>Cada una de sus semillas brillantes es un pequeño latido de mi corazón, un "te amo" silencioso guardado exclusivamente para ti. Hoy, bajo nuestro propio cielo inventado, te entrego mi corazón: brillante y majestuoso como la ciudad luz, y dulce, eterno y mágico como la fruta del deseo.</p>
             </div>
-            <!-- Canvas de la Torre Eiffel y la Granada latiendo -->
             <div class="paris-canvas-container reveal">
                 <canvas id="paris-canvas"></canvas>
             </div>
         </div>
     </section>
 
-    <!-- 9. EL GRAN FINAL (CORAZÓN 3D MATEMÁTICO) -->
-    <section id="finale">
-        <div class="reveal">
-            <!-- Canvas del corazón 3D en partículas rotando -->
-            <canvas id="heart-3d-canvas"></canvas>
-            <h1 class="finale-msg serif">
-                Feliz Aniversario<br>
-                <span>Amorcito ❤️✨</span>
-            </h1>
+    <!-- =========================================
+         8. SECUENCIA FINAL SUPREMA (UNIVERSO -> APAGÓN -> CORAZÓN 3D)
+         ========================================= -->
+    <section id="finale-sequence">
+        
+        <!-- FASE 1: Universo y Carta del Viaje -->
+        <div id="phase1-universe">
+            <div class="universe-bg"></div>
+            
+            <div class="grand-envelope-wrapper reveal" onclick="openGrandEnvelope(this)">
+                <div class="grand-envelope-flap"></div>
+                <div class="grand-envelope-body"></div>
+                <div class="grand-envelope-letter">
+                    <p class="script grand-letter-title">Y que nuestra aventura de mañana...</p>
+                    <p class="grand-letter-text">Nos lleve desde nuestro hermoso <strong>Ayacucho</strong>, sintiendo la magia intacta de <strong>Quinua</strong> y respirando la paz infinita de <strong>Huanta</strong>. Porque recorrer el mundo y crear memorias inolvidables solo tiene sentido si voy aferrado a tu mano.</p>
+                    <button class="btn-sellar" onclick="triggerGrandFinale(event)">Sellar nuestra promesa</button>
+                </div>
+            </div>
+            <p class="envelope-hint">Toca la carta para abrir nuestra próxima aventura...</p>
+        </div>
+
+        <!-- FASE 2: El Apagón -->
+        <div id="phase2-blackout"></div>
+
+        <!-- FASE 3: El Gran Final (Corazón Supremo) -->
+        <div id="phase3-supreme">
+            <canvas id="supreme-heart-canvas"></canvas>
+            <div id="floating-words-container"></div>
+            
+            <div class="supreme-text-container">
+                <h1 class="hearts-text">Feliz Aniversario<br>Amorcito</h1>
+                <p class="hearts-subtitle">❤️✨ Te Amo Infinito ✨❤️</p>
+            </div>
         </div>
     </section>
+
 
     <!-- =========================================
          JAVASCRIPT LOGIC (ANIMACIONES Y MAGIA)
@@ -1022,7 +530,7 @@
                 const preloader = document.getElementById('preloader');
                 preloader.style.opacity = '0';
                 setTimeout(() => { preloader.style.display = 'none'; }, 1000);
-            }, 2500); // Muestra el preloader 2.5 segundos
+            }, 2500);
         });
 
         const music = document.getElementById('bg-music');
@@ -1030,8 +538,7 @@
         let isPlaying = false;
         function toggleMusic() {
             if (isPlaying) { 
-                music.pause(); 
-                playIcon.className = 'fas fa-play'; 
+                music.pause(); playIcon.className = 'fas fa-play'; 
             } else { 
                 music.play().catch(e => console.log("Audio autoplay blocked")); 
                 playIcon.className = 'fas fa-pause'; 
@@ -1039,101 +546,64 @@
             isPlaying = !isPlaying;
         }
 
-        // --- 2. REVEAL AL SCROLL (INTERSECTION OBSERVER) ---
+        // --- 2. REVEAL AL SCROLL ---
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { 
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active'); 
-                }
+                if (entry.isIntersecting) { entry.target.classList.add('active'); }
             });
         }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        // --- 3. CONTADOR DE AMOR (FECHA EXACTA) ---
-        // Asumiendo que iniciaron el 21 de Junio de 2025
+        // --- 3. CONTADOR DE AMOR ---
         const startDate = new Date('2025-06-21T00:00:00').getTime();
-        
         function updateTimer() {
             const now = new Date().getTime();
             const diff = now - startDate;
-            
-            // Si la fecha es futura, dejar en 0
             if (diff < 0) return;
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('t-days').innerText = days.toString().padStart(2, '0');
-            document.getElementById('t-hours').innerText = hours.toString().padStart(2, '0');
-            document.getElementById('t-minutes').innerText = minutes.toString().padStart(2, '0');
-            document.getElementById('t-seconds').innerText = seconds.toString().padStart(2, '0');
+            document.getElementById('t-days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            document.getElementById('t-hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById('t-minutes').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById('t-seconds').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
         }
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        setInterval(updateTimer, 1000); updateTimer();
 
         // --- 4. EFECTO INTERACTIVO DE TOQUE (CORAZONES EN CURSOR) ---
         const cursorCanvas = document.getElementById('cursor-canvas');
         const cCtx = cursorCanvas.getContext('2d');
-        function resizeCursor() { 
-            cursorCanvas.width = window.innerWidth; 
-            cursorCanvas.height = window.innerHeight; 
-        }
-        window.addEventListener('resize', resizeCursor); 
-        resizeCursor();
+        function resizeCursor() { cursorCanvas.width = window.innerWidth; cursorCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCursor); resizeCursor();
         
         let clickHearts = [];
         class ClickHeart {
             constructor(x, y) {
-                this.x = x; 
-                this.y = y;
+                this.x = x; this.y = y;
                 this.size = Math.random() * 15 + 10;
-                this.vy = -(Math.random() * 3 + 1); // Flota hacia arriba
-                this.vx = (Math.random() - 0.5) * 3; // Movimiento lateral aleatorio
+                this.vy = -(Math.random() * 3 + 1); 
+                this.vx = (Math.random() - 0.5) * 3; 
                 this.alpha = 1;
             }
-            update() { 
-                this.y += this.vy; 
-                this.x += this.vx; 
-                this.alpha -= 0.015; // Se desvanece
-            }
+            update() { this.y += this.vy; this.x += this.vx; this.alpha -= 0.015; }
             draw(ctx) {
-                ctx.save();
-                ctx.globalAlpha = Math.max(0, this.alpha);
-                ctx.fillStyle = "#B76E79";
-                ctx.shadowColor = "#B76E79";
-                ctx.shadowBlur = 10;
-                ctx.translate(this.x, this.y);
-                let s = this.size / 15;
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                // Curvas bezier para dibujar un corazón perfecto en el canvas
+                ctx.save(); ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.fillStyle = "#B76E79"; ctx.shadowColor = "#B76E79"; ctx.shadowBlur = 10;
+                ctx.translate(this.x, this.y); let s = this.size / 15;
+                ctx.beginPath(); ctx.moveTo(0, 0);
                 ctx.bezierCurveTo(0, -3*s, -5*s, -3*s, -5*s, 0);
                 ctx.bezierCurveTo(-5*s, 3*s, 0, 5*s, 0, 8*s);
                 ctx.bezierCurveTo(0, 5*s, 5*s, 3*s, 5*s, 0);
                 ctx.bezierCurveTo(5*s, -3*s, 0, -3*s, 0, 0);
-                ctx.fill();
-                ctx.restore();
+                ctx.fill(); ctx.restore();
             }
         }
-        
-        function spawnHearts(x, y) {
-            // Instancia 8 corazones por cada toque
-            for(let i=0; i<8; i++) clickHearts.push(new ClickHeart(x, y));
-        }
+        function spawnHearts(x, y) { for(let i=0; i<8; i++) clickHearts.push(new ClickHeart(x, y)); }
         window.addEventListener('click', (e) => spawnHearts(e.clientX, e.clientY));
         window.addEventListener('touchstart', (e) => spawnHearts(e.touches[0].clientX, e.touches[0].clientY));
 
         function animCursor() {
             cCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
             for(let i=0; i<clickHearts.length; i++) {
-                clickHearts[i].update();
-                clickHearts[i].draw(cCtx);
-                if(clickHearts[i].alpha <= 0) { 
-                    clickHearts.splice(i, 1); 
-                    i--; 
-                }
+                clickHearts[i].update(); clickHearts[i].draw(cCtx);
+                if(clickHearts[i].alpha <= 0) { clickHearts.splice(i, 1); i--; }
             }
             requestAnimationFrame(animCursor);
         }
@@ -1143,317 +613,215 @@
         const hCanvas = document.getElementById('particles-canvas');
         const hCtx = hCanvas.getContext('2d');
         let parts = [];
-        function hResize() { 
-            hCanvas.width = window.innerWidth; 
-            hCanvas.height = window.innerHeight; 
-        }
-        window.addEventListener('resize', hResize); 
-        hResize();
-        
+        function hResize() { hCanvas.width = window.innerWidth; hCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', hResize); hResize();
         class Particle {
             constructor() { 
-                this.x = Math.random() * hCanvas.width; 
-                this.y = Math.random() * hCanvas.height; 
-                this.s = Math.random() * 2.5 + 0.5; // Tamaño
-                this.sy = Math.random() * -0.5 - 0.2; // Velocidad de subida
-                this.sx = (Math.random() - 0.5) * 0.5; // Balanceo
+                this.x = Math.random() * hCanvas.width; this.y = Math.random() * hCanvas.height; 
+                this.s = Math.random() * 2.5 + 0.5; this.sy = Math.random() * -0.5 - 0.2; this.sx = (Math.random() - 0.5) * 0.5; 
             }
-            u() { 
-                this.y += this.sy; 
-                this.x += this.sx;
-                if(this.y < 0) {
-                    this.y = hCanvas.height;
-                    this.x = Math.random() * hCanvas.width;
-                }
-            }
-            d() { 
-                hCtx.fillStyle = "#B76E79"; 
-                hCtx.globalAlpha = Math.random() * 0.5 + 0.2; // Efecto parpadeo sutil
-                hCtx.beginPath(); 
-                hCtx.arc(this.x, this.y, this.s, 0, Math.PI*2); 
-                hCtx.fill(); 
-            }
+            u() { this.y += this.sy; this.x += this.sx; if(this.y < 0) { this.y = hCanvas.height; this.x = Math.random() * hCanvas.width; } }
+            d() { hCtx.fillStyle = "#B76E79"; hCtx.globalAlpha = Math.random() * 0.5 + 0.2; hCtx.beginPath(); hCtx.arc(this.x, this.y, this.s, 0, Math.PI*2); hCtx.fill(); }
         }
         for(let i=0; i<100; i++) parts.push(new Particle());
-        function hAnim() { 
-            hCtx.clearRect(0,0,hCanvas.width,hCanvas.height); 
-            parts.forEach(p => { p.u(); p.d(); }); 
-            requestAnimationFrame(hAnim); 
-        }
+        function hAnim() { hCtx.clearRect(0,0,hCanvas.width,hCanvas.height); parts.forEach(p => { p.u(); p.d(); }); requestAnimationFrame(hAnim); }
         hAnim();
 
-        // --- 6. CIELO ESTRELLADO INTERACTIVO ---
-        const sCanvas = document.getElementById('stars-canvas');
-        const sCtx = sCanvas.getContext('2d');
-        let stars = [];
-        let mouse = { x: null, y: null };
-        
-        function sResize() {
-            sCanvas.width = window.innerWidth;
-            sCanvas.height = document.getElementById('starry-night').offsetHeight;
-        }
-        window.addEventListener('resize', sResize);
-        sResize();
-
-        sCanvas.addEventListener('mousemove', (e) => {
-            let rect = sCanvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-        });
-        sCanvas.addEventListener('touchmove', (e) => {
-            let rect = sCanvas.getBoundingClientRect();
-            mouse.x = e.touches[0].clientX - rect.left;
-            mouse.y = e.touches[0].clientY - rect.top;
-        });
-        sCanvas.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
-        sCanvas.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
-
-        class Star {
-            constructor() {
-                this.x = Math.random() * sCanvas.width;
-                this.y = Math.random() * sCanvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2 + 1;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0 || this.x > sCanvas.width) this.vx = -this.vx;
-                if (this.y < 0 || this.y > sCanvas.height) this.vy = -this.vy;
-            }
-            draw() {
-                sCtx.fillStyle = "rgba(255, 255, 255, 0.8)";
-                sCtx.beginPath();
-                sCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                sCtx.fill();
-            }
-        }
-
-        for (let i = 0; i < 100; i++) stars.push(new Star());
-
-        function animStars() {
-            sCtx.clearRect(0, 0, sCanvas.width, sCanvas.height);
-            for (let i = 0; i < stars.length; i++) {
-                stars[i].update();
-                stars[i].draw();
-                // Conexiones entre estrellas
-                for (let j = i; j < stars.length; j++) {
-                    let dx = stars[i].x - stars[j].x;
-                    let dy = stars[i].y - stars[j].y;
-                    let dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 100) {
-                        sCtx.beginPath();
-                        sCtx.strokeStyle = `rgba(183, 110, 121, ${1 - dist/100})`;
-                        sCtx.lineWidth = 0.5;
-                        sCtx.moveTo(stars[i].x, stars[i].y);
-                        sCtx.lineTo(stars[j].x, stars[j].y);
-                        sCtx.stroke();
-                    }
-                }
-                // Conexión con el mouse
-                if (mouse.x != null) {
-                    let dx = stars[i].x - mouse.x;
-                    let dy = stars[i].y - mouse.y;
-                    let dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < 150) {
-                        sCtx.beginPath();
-                        sCtx.strokeStyle = `rgba(255, 255, 255, ${1 - dist/150})`;
-                        sCtx.lineWidth = 1;
-                        sCtx.moveTo(stars[i].x, stars[i].y);
-                        sCtx.lineTo(mouse.x, mouse.y);
-                        sCtx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animStars);
-        }
-        animStars();
-
-        // --- 7. PARÍS Y GRANADA (CÓDIGO MÁGICO) ---
+        // --- 6. PARÍS Y GRANADA (CÓDIGO MÁGICO) ---
         const pCanvas = document.getElementById('paris-canvas');
         const pCtx = pCanvas.getContext('2d');
         pCanvas.width = 400; pCanvas.height = 500;
-        
         let seeds = [];
         class Seed {
-            constructor(x,y) { 
-                this.x = x + (Math.random()-0.5)*25; 
-                this.y = y; 
-                this.vx = (Math.random()-0.5)*1.8; 
-                this.vy = -(Math.random()*2.5 + 1); 
-                this.life = 1; 
-                this.s = Math.random()*2.5 + 1.5; 
-            }
-            update() { 
-                this.x += this.vx; 
-                this.y += this.vy; 
-                this.life -= 0.007; // Vida de la semilla mágica
-            }
-            draw() { 
-                pCtx.fillStyle = `rgba(220, 20, 60, ${this.life})`; 
-                pCtx.shadowBlur = 15;
-                pCtx.shadowColor = "red";
-                pCtx.beginPath(); 
-                pCtx.arc(this.x, this.y, this.s, 0, Math.PI*2); 
-                pCtx.fill(); 
-                pCtx.shadowBlur = 0;
-            }
+            constructor(x,y) { this.x = x + (Math.random()-0.5)*25; this.y = y; this.vx = (Math.random()-0.5)*1.8; this.vy = -(Math.random()*2.5 + 1); this.life = 1; this.s = Math.random()*2.5 + 1.5; }
+            update() { this.x += this.vx; this.y += this.vy; this.life -= 0.007; }
+            draw() { pCtx.fillStyle = `rgba(220, 20, 60, ${this.life})`; pCtx.shadowBlur = 15; pCtx.shadowColor = "red"; pCtx.beginPath(); pCtx.arc(this.x, this.y, this.s, 0, Math.PI*2); pCtx.fill(); pCtx.shadowBlur = 0; }
         }
-
         function drawParisGranada() {
             pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-            let cx = pCanvas.width / 2;
-            let cy = pCanvas.height - 50; // Base
+            let cx = pCanvas.width / 2; let cy = pCanvas.height - 50; 
+            pCtx.save(); pCtx.translate(cx, cy);
             
-            pCtx.save();
-            pCtx.translate(cx, cy);
-            
-            // DIBUJO TORRE EIFFEL (Efecto Neón)
-            pCtx.strokeStyle = "rgba(183, 110, 121, 0.8)"; 
-            pCtx.shadowColor = "rgba(183, 110, 121, 1)";
-            pCtx.shadowBlur = 20;
-            pCtx.lineWidth = 3;
-            pCtx.lineCap = "round";
-            pCtx.lineJoin = "round";
-
+            pCtx.strokeStyle = "rgba(183, 110, 121, 0.8)"; pCtx.shadowColor = "rgba(183, 110, 121, 1)"; pCtx.shadowBlur = 20; pCtx.lineWidth = 3; pCtx.lineCap = "round"; pCtx.lineJoin = "round";
             pCtx.beginPath();
-            // Patas base
-            pCtx.moveTo(-70, 0); pCtx.quadraticCurveTo(-25, -120, -18, -170);
-            pCtx.moveTo(70, 0); pCtx.quadraticCurveTo(25, -120, 18, -170);
-            // Arco inferior
+            pCtx.moveTo(-70, 0); pCtx.quadraticCurveTo(-25, -120, -18, -170); pCtx.moveTo(70, 0); pCtx.quadraticCurveTo(25, -120, 18, -170);
             pCtx.moveTo(-45, 0); pCtx.quadraticCurveTo(0, -60, 45, 0);
-            // Detalles de pisos
-            pCtx.moveTo(-30, -170); pCtx.lineTo(30, -170); // Piso 1
-            pCtx.moveTo(-18, -170); pCtx.lineTo(-8, -320);
-            pCtx.moveTo(18, -170); pCtx.lineTo(8, -320);
-            pCtx.moveTo(-12, -320); pCtx.lineTo(12, -320); // Piso 2
-            pCtx.moveTo(-8, -320); pCtx.lineTo(0, -440);
-            pCtx.moveTo(8, -320); pCtx.lineTo(0, -440);
-            pCtx.moveTo(0, -440); pCtx.lineTo(0, -470); // Antena Punta
-            
-            // Cruces internas (Estructura)
-            pCtx.moveTo(-25, -200); pCtx.lineTo(25, -200);
-            pCtx.moveTo(-20, -250); pCtx.lineTo(20, -250);
-            pCtx.moveTo(-15, -280); pCtx.lineTo(15, -280);
-            
+            pCtx.moveTo(-30, -170); pCtx.lineTo(30, -170); pCtx.moveTo(-18, -170); pCtx.lineTo(-8, -320); pCtx.moveTo(18, -170); pCtx.lineTo(8, -320);
+            pCtx.moveTo(-12, -320); pCtx.lineTo(12, -320); pCtx.moveTo(-8, -320); pCtx.lineTo(0, -440); pCtx.moveTo(8, -320); pCtx.lineTo(0, -440); pCtx.moveTo(0, -440); pCtx.lineTo(0, -470);
+            pCtx.moveTo(-25, -200); pCtx.lineTo(25, -200); pCtx.moveTo(-20, -250); pCtx.lineTo(20, -250); pCtx.moveTo(-15, -280); pCtx.lineTo(15, -280);
             pCtx.stroke();
 
-            // DIBUJO GRANADA MÁGICA LATIENDO EN LA BASE
-            // Usamos Date.now para latido continuo
             let pulse = 1 + Math.sin(Date.now() * 0.003) * 0.08; 
-            pCtx.shadowBlur = 40;
-            pCtx.shadowColor = "rgba(255, 30, 50, 0.9)";
-            pCtx.fillStyle = "rgba(220, 20, 50, 0.95)";
-            
-            // Cuerpo de la granada
-            pCtx.beginPath();
-            pCtx.arc(0, -25, 30 * pulse, 0, Math.PI * 2);
-            pCtx.fill();
-            
-            // Corona de la granada (arriba)
-            pCtx.fillStyle = "rgba(200, 10, 40, 1)";
-            pCtx.beginPath();
-            pCtx.moveTo(-12 * pulse, -50 * pulse);
-            pCtx.lineTo(-6 * pulse, -65 * pulse);
-            pCtx.lineTo(0, -55 * pulse);
-            pCtx.lineTo(6 * pulse, -65 * pulse);
-            pCtx.lineTo(12 * pulse, -50 * pulse);
-            pCtx.fill();
-
-            // Brillo interior
-            pCtx.fillStyle = "rgba(255, 255, 255, 0.3)";
-            pCtx.shadowBlur = 0;
-            pCtx.beginPath();
-            pCtx.arc(-10 * pulse, -30 * pulse, 8 * pulse, 0, Math.PI * 2);
-            pCtx.fill();
-
+            pCtx.shadowBlur = 40; pCtx.shadowColor = "rgba(255, 30, 50, 0.9)"; pCtx.fillStyle = "rgba(220, 20, 50, 0.95)";
+            pCtx.beginPath(); pCtx.arc(0, -25, 30 * pulse, 0, Math.PI * 2); pCtx.fill();
+            pCtx.fillStyle = "rgba(200, 10, 40, 1)"; pCtx.beginPath(); pCtx.moveTo(-12 * pulse, -50 * pulse); pCtx.lineTo(-6 * pulse, -65 * pulse); pCtx.lineTo(0, -55 * pulse); pCtx.lineTo(6 * pulse, -65 * pulse); pCtx.lineTo(12 * pulse, -50 * pulse); pCtx.fill();
+            pCtx.fillStyle = "rgba(255, 255, 255, 0.3)"; pCtx.shadowBlur = 0; pCtx.beginPath(); pCtx.arc(-10 * pulse, -30 * pulse, 8 * pulse, 0, Math.PI * 2); pCtx.fill();
             pCtx.restore();
 
-            // Semillas de granada emanando (Flotando hacia la torre)
             if(Math.random() < 0.25) seeds.push(new Seed(cx, cy - 25));
-            seeds.forEach((s, i) => { 
-                s.update(); 
-                s.draw(); 
-                if(s.life <= 0) seeds.splice(i, 1); 
-            });
-
+            seeds.forEach((s, i) => { s.update(); s.draw(); if(s.life <= 0) seeds.splice(i, 1); });
             requestAnimationFrame(drawParisGranada);
         }
-        
-        // Optimización: Solo animar París cuando está en pantalla
-        const parisObs = new IntersectionObserver((entries) => {
-            if(entries[0].isIntersecting) { 
-                drawParisGranada(); 
-                parisObs.disconnect(); 
-            }
-        }, { threshold: 0.1 });
+        const parisObs = new IntersectionObserver((entries) => { if(entries[0].isIntersecting) { drawParisGranada(); parisObs.disconnect(); } }, { threshold: 0.1 });
         parisObs.observe(pCanvas);
 
-        // --- 8. CORAZÓN 3D FINAL MATEMÁTICO ---
-        const c3 = document.getElementById('heart-3d-canvas');
-        const x3 = c3.getContext('2d');
-        c3.width = 900; 
-        c3.height = 600;
-        let points3D = [];
-        
-        // Generar 2500 puntos para un corazón denso y espectacular
-        for(let i=0; i<2500; i++) {
-            let t = Math.random() * Math.PI * 2;
-            let r = Math.pow(Math.random(), 0.6); // Distribución del volumen
-            // Fórmula paramétrica del corazón 3D
-            let x = 16 * Math.pow(Math.sin(t), 3);
-            let y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-            let z = (Math.random() - 0.5) * 20; // Profundidad Z
-            
-            points3D.push({
-                x: x * r, 
-                y: y * r, 
-                z: z,
-                size: Math.random() * 1.5 + 0.5,
-                isSparkle: Math.random() > 0.9 // Puntos blancos brillantes
-            });
+        // ==========================================
+        // 7. LOGICA DE LA SECUENCIA FINAL SUPREMA
+        // ==========================================
+        function openGrandEnvelope(el) {
+            el.classList.add('open');
+            document.querySelector('.envelope-hint').style.opacity = 0;
         }
-        
-        let rotY = 0;
-        function draw3DHeart() {
-            x3.clearRect(0,0,c3.width,c3.height); 
-            rotY += 0.008; // Velocidad de rotación lenta
-            
-            const centerX = c3.width / 2;
-            const centerY = c3.height / 2 - 40;
-            const perspective = 300;
-            
-            points3D.forEach(p => {
-                // Rotación en el Eje Y
-                let rx = p.x * Math.cos(rotY) - p.z * Math.sin(rotY);
-                let rz = p.z * Math.cos(rotY) + p.x * Math.sin(rotY);
-                let ry = p.y;
-                
-                if (perspective + rz < 0) return; // Evitar renderizar detrás de cámara
 
-                // Proyección 3D a 2D
-                let scale = perspective / (perspective + rz);
-                let screenX = centerX + rx * scale * 13; // Multiplicador de tamaño X
-                let screenY = centerY + ry * scale * 13; // Multiplicador de tamaño Y
+        function triggerGrandFinale(e) {
+            e.stopPropagation(); // Evitar que cierre la carta
+            const wrapper = document.querySelector('.grand-envelope-wrapper');
+            wrapper.classList.remove('open'); // Cierra la carta
+
+            // Inicia la secuencia de Apagón
+            setTimeout(() => {
+                const blackout = document.getElementById('phase2-blackout');
+                blackout.style.opacity = '1';
+                blackout.style.pointerEvents = 'auto';
                 
-                x3.fillStyle = p.isSparkle ? "#FFFFFF" : "#B76E79";
-                x3.globalAlpha = Math.min(1, scale * 0.8);
-                x3.beginPath(); 
-                x3.arc(screenX, screenY, p.size * scale, 0, Math.PI*2); 
-                x3.fill();
-            });
-            requestAnimationFrame(draw3DHeart);
+                // Mientras está oscuro, preparamos el Supremo y quitamos el Universo
+                setTimeout(() => {
+                    document.getElementById('phase1-universe').style.display = 'none';
+                    const supreme = document.getElementById('phase3-supreme');
+                    supreme.style.opacity = '1';
+                    supreme.style.pointerEvents = 'auto';
+                    
+                    // Desvanecemos el apagón para revelar la maravilla
+                    blackout.style.opacity = '0';
+                    
+                    // Arrancamos animaciones supremas
+                    startSupremeHeart();
+                    startFloatingWords();
+                }, 2500); // Tiempo de oscuridad profunda (Tensión)
+
+            }, 800); // Tiempo para que la carta se cierre visualmente
         }
-        
-        // Iniciar el corazón 3D al final
-        const finaleObs = new IntersectionObserver((entries) => {
-            if(entries[0].isIntersecting) { 
-                draw3DHeart(); 
-                finaleObs.disconnect(); 
+
+        // CORAZÓN 3D SUPREMO
+        let supremeAnimId;
+        function startSupremeHeart() {
+            const c3 = document.getElementById('supreme-heart-canvas');
+            const x3 = c3.getContext('2d');
+            c3.width = window.innerWidth; 
+            c3.height = window.innerHeight;
+            let points3D = [];
+            
+            // 4000 puntos para máxima densidad y belleza
+            for(let i=0; i<4000; i++) {
+                let t = Math.random() * Math.PI * 2;
+                let r = Math.pow(Math.random(), 0.5); 
+                let x = 16 * Math.pow(Math.sin(t), 3);
+                let y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                let z = (Math.random() - 0.5) * 30; 
+                
+                points3D.push({
+                    x: x * r, y: y * r, z: z,
+                    size: Math.random() * 2 + 0.5,
+                    colorType: Math.random() 
+                });
             }
-        }, { threshold: 0.1 });
-        finaleObs.observe(document.getElementById('finale'));
+            
+            let rotY = 0;
+            let targetRotX = 0, targetRotY = 0;
+
+            // Interactividad con mouse/dedo
+            const finaleSection = document.getElementById('finale-sequence');
+            finaleSection.addEventListener('mousemove', (e) => {
+                let mx = e.clientX - window.innerWidth/2;
+                let my = e.clientY - window.innerHeight/2;
+                targetRotY = mx * 0.0005; targetRotX = my * -0.0005;
+            });
+            finaleSection.addEventListener('touchmove', (e) => {
+                let mx = e.touches[0].clientX - window.innerWidth/2;
+                let my = e.touches[0].clientY - window.innerHeight/2;
+                targetRotY = mx * 0.0005; targetRotX = my * -0.0005;
+            });
+
+            function draw3DHeart() {
+                x3.clearRect(0,0,c3.width,c3.height); 
+                rotY += 0.01; 
+                
+                // Latido intenso
+                let beat = 1 + Math.sin(Date.now() * 0.005) * 0.08;
+
+                const centerX = c3.width / 2;
+                const centerY = c3.height / 2;
+                const perspective = 500;
+                
+                let projectedPoints = [];
+
+                points3D.forEach(p => {
+                    let totalRotY = rotY + targetRotY;
+                    let rx1 = p.x * Math.cos(totalRotY) - p.z * Math.sin(totalRotY);
+                    let rz1 = p.z * Math.cos(totalRotY) + p.x * Math.sin(totalRotY);
+                    let ry1 = p.y;
+                    
+                    let rx2 = rx1;
+                    let ry2 = ry1 * Math.cos(targetRotX) - rz1 * Math.sin(targetRotX);
+                    let rz2 = rz1 * Math.cos(targetRotX) + ry1 * Math.sin(targetRotX);
+
+                    if (perspective + rz2 < 0) return;
+
+                    let scale = perspective / (perspective + rz2);
+                    // Tamaño responsivo
+                    let sizeMult = window.innerWidth < 768 ? 10 : 18; 
+                    let screenX = centerX + rx2 * scale * sizeMult * beat; 
+                    let screenY = centerY + ry2 * scale * sizeMult * beat; 
+                    
+                    projectedPoints.push({ x: screenX, y: screenY, z: rz2, scale: scale, size: p.size, colorType: p.colorType });
+                });
+
+                projectedPoints.sort((a, b) => b.z - a.z);
+
+                projectedPoints.forEach(p => {
+                    if(p.colorType > 0.95) { x3.fillStyle = "#FFFFFF"; x3.shadowBlur = 15; x3.shadowColor = "#FFF"; } 
+                    else if(p.colorType > 0.7) { x3.fillStyle = "#ff1493"; x3.shadowBlur = 10; x3.shadowColor = "#ff1493"; } 
+                    else { x3.fillStyle = "#B76E79"; x3.shadowBlur = 0; }
+                    
+                    x3.globalAlpha = Math.min(1, p.scale * 0.9);
+                    x3.beginPath(); x3.arc(p.x, p.y, p.size * p.scale, 0, Math.PI*2); x3.fill();
+                });
+                supremeAnimId = requestAnimationFrame(draw3DHeart);
+            }
+            draw3DHeart();
+        }
+
+        // GENERADOR DE PALABRAS MÁGICAS FLOTANTES
+        let wordInterval;
+        function startFloatingWords() {
+            const container = document.getElementById('floating-words-container');
+            
+            // LISTA AMPLIADA DE APODOS ROMÁNTICOS
+            const words = [
+                "Te amo", "Mi universo", "❤️", "Para siempre", "✨", "Mi dueña", "😍", 
+                "Mi conejita", "Mi princesa", "Mi cariño", "Mi baby", "Mi mujer", "🥰", "Juntos",
+                "Mi osita", "Mi amorcito", "Mi reina", "Mi vida", "Mi cielo", "Mi todo", 
+                "Mi preciosa", "Mi niña", "Mi luz", "💕", "Mi sol", "Mi consentida"
+            ];
+            
+            wordInterval = setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'floating-word';
+                el.innerText = words[Math.floor(Math.random() * words.length)];
+                el.style.left = Math.random() * 90 + 5 + 'vw'; // Random horizontal pos
+                el.style.animationDuration = (Math.random() * 5 + 5) + 's'; // 5s to 10s float
+                
+                // Ajuste dinámico de tamaño para que se vea perfecto y no se sature en el celular
+                let baseSize = window.innerWidth < 768 ? 1 : 1.2;
+                let maxRandom = window.innerWidth < 768 ? 1 : 1.5;
+                el.style.fontSize = (Math.random() * maxRandom + baseSize) + 'rem';
+                
+                container.appendChild(el);
+                
+                // Clean up DOM
+                setTimeout(() => { if(el.parentNode) el.remove(); }, 10000);
+            }, 400); // Aparece 1 palabra cada 400ms
+        }
 
     </script>
 </body>
